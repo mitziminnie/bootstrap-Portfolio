@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlogVista - Modern Blog Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4e73df;
+            --secondary: #6c757d;
+            --success: #1cc88a;
+            --info: #36b9cc;
+            --warning: #f6c23e;
+            --danger: #e74a3b;
+            --light: #f8f9fc;
+            --dark: #5a5c69;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fc;
+            color: #333;
+        }
+        
+        .navbar {
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(78, 115, 223, 0.85), rgba(78, 115, 223, 0.85)), url('https://images.unsplash.com/photo-1496902526517-c0f2cb8fdb6a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 6rem 0;
+            color: white;
+            margin-bottom: 3rem;
+        }
+        
+        .card {
+            border: none;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            transition: transform 0.3s;
+            margin-bottom: 20px;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .blog-card .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .blog-title {
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .blog-content {
+            color: var(--secondary);
+        }
+        
+        .author-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .sidebar {
+            background: white;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .sidebar-title {
+            font-weight: 600;
+            color: var(--dark);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .category-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .category-list li {
+            margin-bottom: 10px;
+        }
+        
+        .category-list a {
+            text-decoration: none;
+            color: var(--secondary);
+            transition: color 0.3s;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .category-list a:hover {
+            color: var(--primary);
+        }
+        
+        .category-list .badge {
+            background-color: var(--primary);
+        }
+        
+        .tag {
+            display: inline-block;
+            background-color: #e9ecef;
+            color: var(--secondary);
+            padding: 5px 10px;
+            border-radius: 20px;
+            margin: 5px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+        
+        .tag:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .admin-panel {
+            display: none;
+        }
+        
+        .comment-section {
+            background: white;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .comment {
+            border-bottom: 1px solid #e3e6f0;
+            padding: 1rem 0;
+        }
+        
+        .comment:last-child {
+            border-bottom: none;
+        }
+        
+        .comment-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: #2e59d9;
+            border-color: #2e59d9;
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+        
+        .single-blog {
+            background: white;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .single-blog-img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 0.35rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .blog-meta {
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+        
+        .admin-sidebar {
+            background: var(--dark);
+            color: white;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+        }
+        
+        .admin-sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 1rem;
+            border-left: 3px solid transparent;
+        }
+        
+        .admin-sidebar .nav-link:hover,
+        .admin-sidebar .nav-link.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border-left-color: var(--primary);
+        }
+        
+        .admin-sidebar .nav-link i {
+            margin-right: 10px;
+        }
+        
+        .admin-content {
+            padding: 20px;
+        }
+        
+        .stats-card {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .stats-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .stats-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 4rem 0;
+            }
+            
+            .single-blog-img {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">BlogVista</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="adminLink">Admin</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <div class="input-group me-3">
+                        <input type="text" class="form-control" placeholder="Search blogs...">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <button class="btn btn-outline-light" id="authButton">
+                        <i class="fas fa-user me-1"></i> Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold">Welcome to BlogVista</h1>
+            <p class="lead">Discover amazing articles on technology, travel, food, and more</p>
+            <button class="btn btn-light btn-lg px-4 py-2 mt-3">Explore Blogs</button>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container mb-5">
+        <div class="row">
+            <!-- Blog Content -->
+            <div class="col-lg-8">
+                <div class="row" id="blogContainer">
+                    <!-- Blog cards will be generated here -->
+                </div>
+                
+                <nav aria-label="Page navigation" class="mt-5">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="sidebar">
+                    <h5 class="sidebar-title">Categories</h5>
+                    <ul class="category-list">
+                        <li><a href="#">Technology <span class="badge bg-primary rounded-pill">14</span></a></li>
+                        <li><a href="#">Travel <span class="badge bg-primary rounded-pill">9</span></a></li>
+                        <li><a href="#">Food <span class="badge bg-primary rounded-pill">7</span></a></li>
+                        <li><a href="#">Lifestyle <span class="badge bg-primary rounded-pill">12</span></a></li>
+                        <li><a href="#">Health <span class="badge bg-primary rounded-pill">6</span></a></li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar">
+                    <h5 class="sidebar-title">Popular Tags</h5>
+                    <div class="tags-container">
+                        <a href="#" class="tag">JavaScript</a>
+                        <a href="#" class="tag">React</a>
+                        <a href="#" class="tag">Travel</a>
+                        <a href="#" class="tag">Food</a>
+                        <a href="#" class="tag">Photography</a>
+                        <a href="#" class="tag">Design</a>
+                        <a href="#" class="tag">Programming</a>
+                        <a href="#" class="tag">Fitness</a>
+                    </div>
+                </div>
+                
+                <div class="sidebar">
+                    <h5 class="sidebar-title">Recent Posts</h5>
+                    <div class="recent-posts">
+                        <div class="d-flex mb-3">
+                            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Recent post" class="me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                            <div>
+                                <h6 class="mb-0">The Future of Web Development</h6>
+                                <small class="text-muted">June 12, 2023</small>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-3">
+                            <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1174&q=80" alt="Recent post" class="me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                            <div>
+                                <h6 class="mb-0">Best Nature Photography Spots</h6>
+                                <small class="text-muted">June 8, 2023</small>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80" alt="Recent post" class="me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                            <div>
+                                <h6 class="mb-0">10 Healthy Breakfast Ideas</h6>
+                                <small class="text-muted">June 5, 2023</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Single Blog View (Hidden by default) -->
+    <div class="container mb-5" id="singleBlogView" style="display: none;">
+        <div class="single-blog">
+            <h2 id="blogTitle">The Future of Web Development in 2023</h2>
+            <div class="blog-meta d-flex align-items-center mb-4">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1160&q=80" alt="Author" class="author-img me-2">
+                <div>
+                    <span>By <a href="#" class="text-decoration-none">John Doe</a></span> • 
+                    <span>June 15, 2023</span> • 
+                    <span>10 min read</span>
+                </div>
+            </div>
+            
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Blog image" class="single-blog-img">
+            
+            <div class="blog-content">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                
+                <h4>New Frameworks and Libraries</h4>
+                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+                
+                <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+                
+                <h4>The Rise of AI in Development</h4>
+                <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
+            </div>
+            
+            <div class="blog-tags mt-4">
+                <a href="#" class="tag">Technology</a>
+                <a href="#" class="tag">Web Development</a>
+                <a href="#" class="tag">Programming</a>
+            </div>
+        </div>
+        
+        <!-- Comment Section -->
+        <div class="comment-section">
+            <h4 class="mb-4">Comments (3)</h4>
+            
+            <div class="comment">
+                <div class="d-flex">
+                    <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1160&q=80" alt="User" class="comment-img me-3">
+                    <div>
+                        <h5>Michael Brown</h5>
+                        <p class="text-muted">June 16, 2023 at 2:30 PM</p>
+                        <p>Great article! I completely agree with your points about the future of web development. The AI integration is something we should all be paying attention to.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="comment">
+                <div class="d-flex">
+                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1161&q=80" alt="User" class="comment-img me-3">
+                    <div>
+                        <h5>Sarah Johnson</h5>
+                        <p class="text-muted">June 15, 2023 at 6:45 PM</p>
+                        <p>Thanks for sharing this insightful post. I've been working in web development for 10 years and it's amazing to see how much has changed.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="comment">
+                <div class="d-flex">
+                    <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1160&q=80" alt="User" class="comment-img me-3">
+                    <div>
+                        <h5>David Wilson</h5>
+                        <p class="text-muted">June 15, 2023 at 10:12 AM</p>
+                        <p>I'm curious about your thoughts on WebAssembly. Do you think it will replace JavaScript in the near future?</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="add-comment mt-5">
+                <h4 class="mb-4">Leave a Comment</h4>
+                <form>
+                    <div class="mb-3">
+                        <label for="commentName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="commentName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="commentEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="commentEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="commentMessage" class="form-label">Comment</label>
+                        <textarea class="form-control" id="commentMessage" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Post Comment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Admin Panel (Hidden by default) -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Sidebar -->
+                <div class="col-lg-2 col-md-3 p-0">
+                    <div class="admin-sidebar">
+                        <div class="text-center p-4">
+                            <h5 class="text-white">BlogVista Admin</h5>
+                        </div>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#">
+                                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <i class="fas fa-newspaper"></i> Posts
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <i class="fas fa-folder"></i> Categories
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <i class="fas fa-comments"></i> Comments
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <i class="fas fa-users"></i> Users
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <i class="fas fa-cog"></i> Settings
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" id="backToBlog">
+                                    <i class="fas fa-arrow-left"></i> Back to Blog
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Main Content -->
+                <div class="col-lg-10 col-md-9 admin-content">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="h4 mb-0">Dashboard</h2>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus me-1"></i> New Post
+                        </button>
+                    </div>
+                    
+                    <!-- Stats Cards -->
+                    <div class="row">
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="stats-icon text-primary">
+                                        <i class="fas fa-newspaper"></i>
+                                    </div>
+                                    <div class="stats-number">24</div>
+                                    <div class="small text-muted">Total Posts</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="stats-icon text-success">
+                                        <i class="fas fa-comments"></i>
+                                    </div>
+                                    <div class="stats-number">38</div>
+                                    <div class="small text-muted">Comments</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="stats-icon text-warning">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="stats-number">12</div>
+                                    <div class="small text-muted">Users</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="stats-icon text-info">
+                                        <i class="fas fa-folder"></i>
+                                    </div>
+                                    <div class="stats-number">7</div>
+                                    <div class="small text-muted">Categories</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Posts -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h6 class="m-0">Recent Posts</h6>
+                                    <a href="#" class="btn btn-sm btn-primary">View All</a>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Title</th>
+                                                    <th>Author</th>
+                                                    <th>Categories</th>
+                                                    <th>Date</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>The Future of Web Development</td>
+                                                    <td>John Doe</td>
+                                                    <td>Technology</td>
+                                                    <td>Jun 15, 2023</td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></button>
+                                                        <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Best Nature Photography Spots</td>
+                                                    <td>Jane Smith</td>
+                                                    <td>Travel</td>
+                                                    <td>Jun 10, 2023</td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></button>
+                                                        <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>10 Healthy Breakfast Ideas</td>
+                                                    <td>Mike Johnson</td>
+                                                    <td>Food</td>
+                                                    <td>Jun 8, 2023</td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></button>
+                                                        <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="mb-4">BlogVista</h5>
+                    <p>A modern blog platform for sharing ideas, stories, and expertise on various topics.</p>
+                    <div class="d-flex mt-4">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <h6 class="text-uppercase fw-bold mb-4">Explore</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Home</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Blog</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Categories</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">About</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <h6 class="text-uppercase fw-bold mb-4">Categories</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Technology</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Travel</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Food</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Lifestyle</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <h6 class="text-uppercase fw-bold mb-4">Newsletter</h6>
+                    <p>Subscribe to our newsletter for the latest updates</p>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Your email address">
+                        <button class="btn btn-primary">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2023 BlogVista. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sample blog data
+        const blogs = [
+            { 
+                id: 1, 
+                title: "The Future of Web Development in 2023", 
+                excerpt: "Explore the latest trends and technologies that are shaping the future of web development.", 
+                image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80", 
+                category: "Technology",
+                date: "June 15, 2023",
+                author: "John Doe",
+                authorImage: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1160&q=80"
+            },
+            { 
+                id: 2, 
+                title: "Best Nature Photography Spots in Europe", 
+                excerpt: "Discover the most breathtaking locations for nature photography across Europe.", 
+                image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1174&q=80", 
+                category: "Travel",
+                date: "June 12, 2023",
+                author: "Jane Smith",
+                authorImage: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1161&q=80"
+            },
+            { 
+                id: 3, 
+                title: "10 Healthy Breakfast Ideas for Busy Mornings", 
+                excerpt: "Quick and nutritious breakfast recipes that will fuel your busy days.", 
+                image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80", 
+                category: "Food",
+                date: "June 10, 2023",
+                author: "Mike Johnson",
+                authorImage: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1160&q=80"
+            },
+            { 
+                id: 4, 
+                title: "How to Build a Productive Morning Routine", 
+                excerpt: "Learn how successful people start their days and boost productivity.", 
+                image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80", 
+                category: "Lifestyle",
+                date: "June 8, 2023",
+                author: "Sarah Wilson",
+                authorImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+            }
+        ];
+        
+        // DOM Elements
+        const blogContainer = document.getElementById('blogContainer');
+        const singleBlogView = document.getElementById('singleBlogView');
+        const adminPanel = document.getElementById('adminPanel');
+        const adminLink = document.getElementById('adminLink');
+        const backToBlog = document.getElementById('backToBlog');
+        const authButton = document.getElementById('authButton');
+        
+        // Display blogs
+        function displayBlogs() {
+            blogContainer.innerHTML = '';
+            
+            blogs.forEach(blog => {
+                const blogCard = document.createElement('div');
+                blogCard.className = 'col-md-6 mb-4';
+                blogCard.innerHTML = `
+                    <div class="card blog-card h-100">
+                        <img src="${blog.image}" class="card-img-top" alt="${blog.title}">
+                        <div class="card-body">
+                            <span class="badge bg-primary mb-2">${blog.category}</span>
+                            <h5 class="card-title blog-title">${blog.title}</h5>
+                            <p class="card-text blog-content">${blog.excerpt}</p>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <div class="d-flex align-items-center">
+                                <img src="${blog.authorImage}" alt="Author" class="author-img me-2">
+                                <div>
+                                    <small class="text-muted">By ${blog.author}</small><br>
+                                    <small class="text-muted">${blog.date}</small>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary ms-auto read-more" data-id="${blog.id}">Read More</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                blogContainer.appendChild(blogCard);
+            });
+            
+            // Add event listeners to Read More buttons
+            document.querySelectorAll('.read-more').forEach(button => {
+                button.addEventListener('click', function() {
+                    const blogId = parseInt(this.getAttribute('data-id'));
+                    showSingleBlog(blogId);
+                });
+            });
+        }
+        
+        // Show single blog
+        function showSingleBlog(blogId) {
+            const blog = blogs.find(b => b.id === blogId);
+            if (blog) {
+                document.getElementById('blogTitle').textContent = blog.title;
+                document.querySelector('.single-blog-img').src = blog.image;
+                document.querySelector('.author-img').src = blog.authorImage;
+                document.querySelector('.blog-meta a').textContent = blog.author;
+                
+                document.querySelector('.container:not(.admin-panel)').style.display = 'none';
+                singleBlogView.style.display = 'block';
+                window.scrollTo(0, 0);
+            }
+        }
+        
+        // Show admin panel
+        function showAdminPanel() {
+            document.querySelector('.container:not(.admin-panel)').style.display = 'none';
+            singleBlogView.style.display = 'none';
+            adminPanel.style.display = 'block';
+        }
+        
+        // Show blog list
+        function showBlogList() {
+            adminPanel.style.display = 'none';
+            singleBlogView.style.display = 'none';
+            document.querySelector('.container:not(.admin-panel)').style.display = 'block';
+        }
+        
+        // Toggle auth button
+        function toggleAuth() {
+            if (authButton.textContent.includes('Login')) {
+                authButton.innerHTML = '<i class="fas fa-user me-1"></i> Logout';
+            } else {
+                authButton.innerHTML = '<i class="fas fa-user me-1"></i> Login';
+            }
+        }
+        
+        // Event Listeners
+        adminLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            showAdminPanel();
+        });
+        
+        backToBlog.addEventListener('click', function(e) {
+            e.preventDefault();
+            showBlogList();
+        });
+        
+        authButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            toggleAuth();
+        });
+        
+        // Initialize
+        displayBlogs();
+    </script>
+</body>
+</html>
