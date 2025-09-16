@@ -1,4 +1,4 @@
-
+ 
     /* Custom CSS with Dark/Light Theme */
     :root {
       --primary-color: #4f46e5;    /* Indigo */
@@ -160,7 +160,7 @@
       z-index: 997;
       padding: 20px 0;
       background: rgba(var(--card-bg-rgb), 0.95);
-       
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
       backdrop-filter: blur(10px);
     }
     
@@ -245,7 +245,7 @@
     .animated-background .shape {
       position: absolute;
       border-radius: 50%;
-      opacity: 0.2;
+      opacity: 0.1;
       animation: float 15s infinite linear;
     }
     
@@ -407,9 +407,6 @@
       transform: translateY(-3px);
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
-
-
-    
     
     /* About Section */
     .about {
@@ -1121,3 +1118,4 @@
         font-size: 32px;
       }
     }
+ 
